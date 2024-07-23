@@ -16,27 +16,27 @@ Aqui está um resumo das funcionalidades do aplicativo e o status atual de cada 
 
 ### Login
 
-| Funcionalidade             | Status                 | Descrição                                                      |
-|----------------------------|------------------------|----------------------------------------------------------------|
-| Autenticar usuário         | 🚧 Em desenvolvimento  | Permite login dos usuários, redirecionando para a tela correspondente (ADM ou PDV). |
+| Funcionalidade     | Status                | Descrição                                                                           |
+| ------------------ | --------------------- | ----------------------------------------------------------------------------------- |
+| Autenticar usuário | 🚧 Em desenvolvimento | Permite login dos usuários, redirecionando para a tela correspondente (ADM ou PDV). |
 
 ## Funcionalidades do Administrador (ADM)
 
-| Funcionalidade              | Status                 | Descrição                                                       |
-|-----------------------------|------------------------|-----------------------------------------------------------------|
-| Cadastrar usuário           | ❌ Não iniciado        | Permite que administradores criem novos usuários com nível de acesso (ADM ou PDV). |
-| Cadastrar produtos          | ❌ Não iniciado        | Permite que administradores cadastrem novos produtos.           |
-| Visualizar produtos         | ❌ Não iniciado        | Permite que administradores visualizem produtos.                |
-| Atualizar produtos          | ❌ Não iniciado        | Permite que administradores atualizem informações dos produtos. |
-| Deletar produtos            | ❌ Não iniciado        | Permite que administradores removam produtos.                   |
-| Visualizar vendas           | ❌ Não iniciado        | Permite que administradores visualizem vendas registradas.      |
+| Funcionalidade      | Status          | Descrição                                                                          |
+| ------------------- | --------------- | ---------------------------------------------------------------------------------- |
+| Cadastrar usuário   | ❌ Não iniciado | Permite que administradores criem novos usuários com nível de acesso (ADM ou PDV). |
+| Cadastrar produtos  | ❌ Não iniciado | Permite que administradores cadastrem novos produtos.                              |
+| Visualizar produtos | ❌ Não iniciado | Permite que administradores visualizem produtos.                                   |
+| Atualizar produtos  | ❌ Não iniciado | Permite que administradores atualizem informações dos produtos.                    |
+| Deletar produtos    | ❌ Não iniciado | Permite que administradores removam produtos.                                      |
+| Visualizar vendas   | ❌ Não iniciado | Permite que administradores visualizem vendas registradas.                         |
 
 ## Funcionalidades do Ponto de Venda (PDV)
 
-| Funcionalidade              | Status          | Descrição                                                  |
-|-----------------------------|-----------------|------------------------------------------------------------|
-| Registrar venda             | ❌ Não iniciado | Permite que PDVs registrem novas vendas.                   |
-| Visualizar produtos         | ❌ Não iniciado | Permite que PDVs visualizem produtos.                      |
+| Funcionalidade      | Status          | Descrição                                |
+| ------------------- | --------------- | ---------------------------------------- |
+| Registrar venda     | ❌ Não iniciado | Permite que PDVs registrem novas vendas. |
+| Visualizar produtos | ❌ Não iniciado | Permite que PDVs visualizem produtos.    |
 
 ## Fluxo de Navegação
 
