@@ -1,7 +1,8 @@
 import { Login } from '@renderer/interfaces/login.interface'
+import { User } from '@renderer/interfaces/user.interface'
 
-export async function login({ email, password }: Login) {
-  const result = await new Promise((resolve, reject) =>
+export async function loginService({ email, password }: Login): Promise<User> {
+  const result: User = await new Promise((resolve) =>
     setTimeout(() => {
       if (email === 'adm@gmail.com' && password === '123123') {
         resolve({
@@ -24,9 +25,10 @@ export async function login({ email, password }: Login) {
           },
         })
       } else {
-        reject('email ou senha errada!')
+        throw new Error('Usuario nao existem!')
       }
-    }, 2000),
+    }, 1000),
   )
+
   return result
 }

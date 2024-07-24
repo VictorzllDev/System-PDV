@@ -9,11 +9,17 @@ import {
 } from '@renderer/components/ui/card'
 import { Input } from '@renderer/components/ui/input'
 import { HandleLogin } from '@renderer/interfaces/login.interface'
-import { login } from '@renderer/services/login.service'
-import React from 'react'
+import { actionLogin } from '@renderer/redux/user/slice'
+import { loginService } from '@renderer/services/login.service'
+import { FormEvent } from 'react'
+import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 
 export function Login() {
-  const handleLogin = async (e: React.FormEvent<HandleLogin>): Promise<any> => {
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+
+  const handleLogin = async (e: FormEvent<HandleLogin>): Promise<any> => {
     e.preventDefault()
 
     const data = {
@@ -21,9 +27,13 @@ export function Login() {
       password: e.currentTarget.password.value,
     }
 
-    console.log('init')
-    const result = await login(data)
-    console.log(result)
+    try {
+      const result = await loginService(data)
+      dispatch(actionLogin(result))
+      navigate(`/${result.access.name.toLowerCase()}`)
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   return (
