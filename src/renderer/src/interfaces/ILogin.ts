@@ -1,9 +1,9 @@
-export interface Login {
+export interface ILogin {
   email: string
   password: string
 }
 
-export interface HandleLogin extends HTMLFormElement {
+export interface IHandleLogin extends HTMLFormElement {
   email: {
     value: string
   }

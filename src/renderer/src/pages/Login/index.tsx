@@ -8,9 +8,9 @@ import {
   CardTitle,
 } from '@renderer/components/ui/card'
 import { Input } from '@renderer/components/ui/input'
-import { HandleLogin } from '@renderer/interfaces/login.interface'
-import { actionLogin } from '@renderer/redux/user/slice'
-import { loginService } from '@renderer/services/login.service'
+import { IHandleLogin } from '@renderer/interfaces/ILogin'
+import { loginAction } from '@renderer/redux/user/slice'
+import { loginService } from '@renderer/services/loginService'
 import { FormEvent } from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
@@ -19,7 +19,7 @@ export function Login() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  const handleLogin = async (e: FormEvent<HandleLogin>): Promise<any> => {
+  const handleLogin = async (e: FormEvent<IHandleLogin>): Promise<void> => {
     e.preventDefault()
 
     const data = {
@@ -27,12 +27,19 @@ export function Login() {
       password: e.currentTarget.password.value,
     }
 
+    if (!data.email || !data.password) return
+
     try {
       const result = await loginService(data)
-      dispatch(actionLogin(result))
+
+      dispatch(loginAction(result))
       navigate(`/${result.access.name.toLowerCase()}`)
-    } catch (e) {
-      console.log(e)
+    } catch (err: any) {
+      if (err.message) {
+        alert(err.message)
+      } else {
+        alert('Falha no login. Por favor, tente novamente.')
+      }
     }
   }
 

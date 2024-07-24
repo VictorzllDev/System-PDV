@@ -1,8 +1,11 @@
-import { Login } from '@renderer/interfaces/login.interface'
-import { User } from '@renderer/interfaces/user.interface'
+import { ILogin } from '@renderer/interfaces/ILogin'
+import { IUser } from '@renderer/interfaces/IUser'
 
-export async function loginService({ email, password }: Login): Promise<User> {
-  const result: User = await new Promise((resolve) =>
+export async function loginService({
+  email,
+  password,
+}: ILogin): Promise<IUser> {
+  const result: IUser = await new Promise((resolve, reject) =>
     setTimeout(() => {
       if (email === 'adm@gmail.com' && password === '123123') {
         resolve({
@@ -25,7 +28,9 @@ export async function loginService({ email, password }: Login): Promise<User> {
           },
         })
       } else {
-        throw new Error('Usuario nao existem!')
+        reject({
+          message: 'E-mail ou senha está incorreto',
+        })
       }
     }, 1000),
   )
