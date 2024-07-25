@@ -1,4 +1,3 @@
-import { Label } from '@radix-ui/react-label'
 import { Button } from '@renderer/components/ui/button'
 import {
   Card,
@@ -7,17 +6,33 @@ import {
   CardHeader,
   CardTitle,
 } from '@renderer/components/ui/card'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@renderer/components/ui/dialog'
 import { Input } from '@renderer/components/ui/input'
+import { Label } from '@renderer/components/ui/label'
 import { IHandleLogin } from '@renderer/interfaces/ILogin'
+import { changeApiUrl } from '@renderer/redux/settings/slice'
+import { RootState } from '@renderer/redux/store'
 import { loginAction } from '@renderer/redux/user/slice'
 import { loginService } from '@renderer/services/loginService'
-import { FormEvent } from 'react'
-import { useDispatch } from 'react-redux'
+import { IconSettings } from '@tabler/icons-react'
+import { FormEvent, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
 export function Login() {
+  const settings = useSelector((state: RootState) => state.settings)
   const navigate = useNavigate()
   const dispatch = useDispatch()
+
+  const [apiUrl, setApiUrl] = useState<string>(settings.apiUrl)
 
   const handleLogin = async (e: FormEvent<IHandleLogin>): Promise<void> => {
     e.preventDefault()
@@ -30,7 +45,7 @@ export function Login() {
     if (!data.email || !data.password) return
 
     try {
-      const result = await loginService(data)
+      const result = await loginService(settings.apiUrl, data)
 
       dispatch(loginAction(result))
       navigate(`/${result.access.name.toLowerCase()}`)
@@ -43,6 +58,9 @@ export function Login() {
     }
   }
 
+  const handleApiUrl = (apiUrl: string): void => {
+    dispatch(changeApiUrl(apiUrl))
+  }
   return (
     <main className="flex h-screen items-center justify-center">
       <Card className="w-full max-w-md">
@@ -66,6 +84,42 @@ export function Login() {
           </form>
         </CardContent>
       </Card>
+
+      <Dialog>
+        <DialogTrigger>
+          <div className="fixed right-0 top-0 p-5">
+            <IconSettings className="dark:text-slate-100" />
+          </div>
+        </DialogTrigger>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Configurações</DialogTitle>
+            <DialogDescription>
+              Faça alterações nas suas configurações aqui. Clique em salvar
+              quando terminar.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="api-url" className="text-right">
+                API URL
+              </Label>
+              <Input
+                id="api-url"
+                defaultValue={settings.apiUrl}
+                onChange={(e) => setApiUrl(e.target.value)}
+                placeholder="https://exemplo.api/v1"
+                className="col-span-3"
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button onClick={() => handleApiUrl(apiUrl)}>
+              Salvar alterações
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </main>
   )
 }

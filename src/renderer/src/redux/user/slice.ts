@@ -1,4 +1,4 @@
-import type { PayloadAction } from '@reduxjs/toolkit'
+import { PayloadAction } from '@reduxjs/toolkit'
 import { createSlice } from '@reduxjs/toolkit'
 import { IUser } from '@renderer/interfaces/IUser'
 
