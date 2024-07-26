@@ -8,6 +8,7 @@ import {
 } from '@renderer/components/ui/card'
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -78,7 +79,7 @@ export function Login() {
     dispatch(changeApiUrl(apiUrl))
   }
   return (
-    <main className="flex h-screen items-center justify-center">
+    <main className="flex h-screen items-center justify-center bg-background">
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle className="text-3xl">Login</CardTitle>
@@ -101,10 +102,10 @@ export function Login() {
         </CardContent>
       </Card>
 
-      <Dialog>
+      <Dialog modal>
         <DialogTrigger>
           <div className="fixed right-0 top-0 p-5">
-            <IconSettings className="dark:text-slate-100" />
+            <IconSettings className="text-primary" />
           </div>
         </DialogTrigger>
         <DialogContent>
@@ -130,9 +131,14 @@ export function Login() {
             </div>
           </div>
           <DialogFooter>
-            <Button onClick={() => handleApiUrl(apiUrl)}>
-              Salvar alterações
-            </Button>
+            <DialogClose asChild>
+              <Button variant="destructive">Cancelar</Button>
+            </DialogClose>
+            <DialogClose asChild>
+              <Button onClick={() => handleApiUrl(apiUrl)}>
+                Salvar alterações
+              </Button>
+            </DialogClose>
           </DialogFooter>
         </DialogContent>
       </Dialog>
