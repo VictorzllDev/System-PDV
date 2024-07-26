@@ -23,6 +23,8 @@ import { RootState } from '@renderer/redux/store'
 import { loginAction } from '@renderer/redux/user/slice'
 import { loginService } from '@renderer/services/login.service'
 import { IHandleLogin } from '@renderer/types/login.types'
+import { ISettings } from '@renderer/types/settings.types'
+import { saveOrMergeItem } from '@renderer/utils/localStorage.utils'
 import { showNotification } from '@renderer/utils/notification.utils'
 import { IconSettings } from '@tabler/icons-react'
 import { FormEvent, useState } from 'react'
@@ -77,6 +79,7 @@ export function Login() {
 
   const handleApiUrl = (apiUrl: string): void => {
     dispatch(changeApiUrl(apiUrl))
+    saveOrMergeItem<ISettings>('settings', { apiUrl })
   }
   return (
     <main className="flex h-screen items-center justify-center bg-background">

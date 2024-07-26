@@ -1,9 +1,14 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { ISettings } from '@renderer/types/settings.types'
+import { getItem } from '@renderer/utils/localStorage.utils'
 
-const initialState: ISettings = {
+let initialState: ISettings = {
   apiUrl: '',
 }
+
+const retrievedSettings = getItem<ISettings>('settings')
+
+if (retrievedSettings) initialState = { ...initialState, ...retrievedSettings }
 
 const settings = createSlice({
   name: 'settings',

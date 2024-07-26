@@ -1,3 +1,3 @@
 export interface ISettings {
-  apiUrl: string
+  apiUrl?: string
 }
