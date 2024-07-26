@@ -17,11 +17,12 @@ import {
 } from '@renderer/components/ui/dialog'
 import { Input } from '@renderer/components/ui/input'
 import { Label } from '@renderer/components/ui/label'
-import { IHandleLogin } from '@renderer/types/login.types'
 import { changeApiUrl } from '@renderer/redux/settings/slice'
 import { RootState } from '@renderer/redux/store'
 import { loginAction } from '@renderer/redux/user/slice'
 import { loginService } from '@renderer/services/login.service'
+import { IHandleLogin } from '@renderer/types/login.types'
+import { showNotification } from '@renderer/utils/notification.utils'
 import { IconSettings } from '@tabler/icons-react'
 import { FormEvent, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -42,18 +43,33 @@ export function Login() {
       password: e.currentTarget.password.value,
     }
 
-    if (!data.email || !data.password) return
-
+    if (!data.email || !data.password)
+      return showNotification.Warn({
+        title: 'Campos obrigatórios não preenchidos',
+        description:
+          'Por favor, preencha o campo de e-mail e a senha para continuar.',
+      })
     try {
       const result = await loginService(settings.apiUrl, data)
 
       dispatch(loginAction(result))
       navigate(`/${result.access.name.toLowerCase()}`)
+      showNotification.Success({
+        title: 'Login realizado com sucesso',
+        description: `Você agora está logado. Bem-vindo de volta!`,
+      })
     } catch (err: any) {
-      if (err.message) {
-        alert(err.message)
+      if (err.response?.data?.message) {
+        showNotification.Error({
+          title: 'ERROR',
+          description: err.response.data.message,
+        })
       } else {
-        alert('Falha no login. Por favor, tente novamente.')
+        showNotification.Error({
+          title: 'Erro de conexão com a API',
+          description:
+            'Verifique se a URL da API está correta e se o servidor está acessível.',
+        })
       }
     }
   }
@@ -75,7 +91,7 @@ export function Login() {
               <Input type="email" id="email" placeholder="exemplo@system.com" />
             </div>
             <div>
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password">Senha</Label>
               <Input type="password" id="password" placeholder="********" />
             </div>
             <Button type="submit" className="w-full">
