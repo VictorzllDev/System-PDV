@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { ISettings } from '@renderer/interfaces/ISettings'
+import { ISettings } from '@renderer/types/settings.types'
 
 const initialState: ISettings = {
   apiUrl: '',

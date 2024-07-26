@@ -1,5 +1,5 @@
-import { ILogin } from '@renderer/interfaces/ILogin'
-import { IUser } from '@renderer/interfaces/IUser'
+import { ILogin } from '@renderer/types/login.types'
+import { IUser } from '@renderer/types/user.types'
 import axios, { AxiosResponse } from 'axios'
 
 export async function loginService(
