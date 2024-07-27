@@ -18,7 +18,7 @@ import {
 } from '@renderer/components/ui/dialog'
 import { Input } from '@renderer/components/ui/input'
 import { Label } from '@renderer/components/ui/label'
-import { changeApiUrl } from '@renderer/redux/settings/slice'
+import { changeSettings } from '@renderer/redux/settings/slice'
 import { RootState } from '@renderer/redux/store'
 import { loginAction } from '@renderer/redux/user/slice'
 import { loginService } from '@renderer/services/login.service'
@@ -32,11 +32,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
 export function Login() {
-  const settings = useSelector((state: RootState) => state.settings)
+  const SETTINGS = useSelector((state: RootState) => state.settings)
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  const [apiUrl, setApiUrl] = useState<string>(settings.apiUrl)
+  const [settings, setSettings] = useState<ISettings>(SETTINGS)
 
   const handleLogin = async (e: FormEvent<IHandleLogin>): Promise<void> => {
     e.preventDefault()
@@ -53,7 +53,7 @@ export function Login() {
           'Por favor, preencha o campo de e-mail e a senha para continuar.',
       })
     try {
-      const result = await loginService(settings.apiUrl, data)
+      const result = await loginService(SETTINGS.API_URL, data)
 
       dispatch(loginAction(result))
       navigate(`/${result.access.name.toLowerCase()}`)
@@ -77,10 +77,11 @@ export function Login() {
     }
   }
 
-  const handleApiUrl = (apiUrl: string): void => {
-    dispatch(changeApiUrl(apiUrl))
-    saveOrMergeItem<ISettings>('settings', { apiUrl })
+  const handleSaveSettings = (settings: ISettings): void => {
+    dispatch(changeSettings(settings))
+    saveOrMergeItem<ISettings>('settings', settings)
   }
+
   return (
     <main className="flex h-screen items-center justify-center bg-background">
       <Card className="w-full max-w-md">
@@ -126,8 +127,10 @@ export function Login() {
               </Label>
               <Input
                 id="api-url"
-                defaultValue={settings.apiUrl}
-                onChange={(e) => setApiUrl(e.target.value)}
+                defaultValue={SETTINGS.API_URL}
+                onChange={(e) =>
+                  setSettings({ ...settings, API_URL: e.target.value })
+                }
                 placeholder="https://exemplo.api/v1"
                 className="col-span-3"
               />
@@ -138,7 +141,7 @@ export function Login() {
               <Button variant="destructive">Cancelar</Button>
             </DialogClose>
             <DialogClose asChild>
-              <Button onClick={() => handleApiUrl(apiUrl)}>
+              <Button onClick={() => handleSaveSettings(settings)}>
                 Salvar alterações
               </Button>
             </DialogClose>

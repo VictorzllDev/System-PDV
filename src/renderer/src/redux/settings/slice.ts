@@ -3,7 +3,7 @@ import { ISettings } from '@renderer/types/settings.types'
 import { getItem } from '@renderer/utils/localStorage.utils'
 
 let initialState: ISettings = {
-  apiUrl: '',
+  API_URL: '',
 }
 
 const retrievedSettings = getItem<ISettings>('settings')
@@ -14,12 +14,12 @@ const settings = createSlice({
   name: 'settings',
   initialState,
   reducers: {
-    changeApiUrl: (state, { payload }: PayloadAction<string>) => {
-      state.apiUrl = payload
+    changeSettings: (state, { payload }: PayloadAction<ISettings>) => {
+      return { ...state, ...payload }
     },
   },
 })
 
-export const { changeApiUrl } = settings.actions
+export const { changeSettings } = settings.actions
 
 export default settings.reducer
