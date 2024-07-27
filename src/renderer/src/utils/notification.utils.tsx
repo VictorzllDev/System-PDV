@@ -5,13 +5,13 @@ import {
 } from '@tabler/icons-react'
 import { toast } from 'sonner'
 
-interface INotification {
+interface INotificationProps {
   title: string
-  description: string
+  description?: string
 }
 
 class Notification {
-  Error({ title, description }: INotification) {
+  Error({ title, description }: INotificationProps) {
     toast(title, {
       icon: <IconExclamationCircle />,
       position: 'top-right',
@@ -22,7 +22,7 @@ class Notification {
     })
   }
 
-  Success({ title, description }: INotification) {
+  Success({ title, description }: INotificationProps) {
     toast(title, {
       icon: <IconCircleCheck />,
       position: 'top-right',
@@ -33,7 +33,7 @@ class Notification {
     })
   }
 
-  Warn({ title, description }: INotification) {
+  Warn({ title, description }: INotificationProps) {
     toast(title, {
       icon: <IconAlertTriangle />,
       position: 'top-right',
