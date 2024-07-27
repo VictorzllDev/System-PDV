@@ -4,6 +4,7 @@ import { getItem } from '@renderer/utils/localStorage.utils'
 
 let initialState: ISettings = {
   API_URL: '',
+  THEME: 'light',
 }
 
 const retrievedSettings = getItem<ISettings>('settings')

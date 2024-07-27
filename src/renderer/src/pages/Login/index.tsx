@@ -18,12 +18,20 @@ import {
 } from '@renderer/components/ui/dialog'
 import { Input } from '@renderer/components/ui/input'
 import { Label } from '@renderer/components/ui/label'
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@renderer/components/ui/select'
 import { changeSettings } from '@renderer/redux/settings/slice'
 import { RootState } from '@renderer/redux/store'
 import { loginAction } from '@renderer/redux/user/slice'
 import { loginService } from '@renderer/services/login.service'
 import { IHandleLogin } from '@renderer/types/login.types'
-import { ISettings } from '@renderer/types/settings.types'
+import { ISettings, IThemes } from '@renderer/types/settings.types'
 import { saveOrMergeItem } from '@renderer/utils/localStorage.utils'
 import { showNotification } from '@renderer/utils/notification.utils'
 import { IconSettings } from '@tabler/icons-react'
@@ -123,7 +131,7 @@ export function Login() {
           <div className="grid gap-4 py-4">
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="api-url" className="text-right">
-                API URL
+                API
               </Label>
               <Input
                 id="api-url"
@@ -134,6 +142,30 @@ export function Login() {
                 placeholder="https://exemplo.api/v1"
                 className="col-span-3"
               />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="api-url" className="text-right">
+                Tema
+              </Label>
+              <Select
+                defaultValue={(SETTINGS.THEME as IThemes) || 'light'}
+                onValueChange={(e) =>
+                  setSettings({
+                    ...settings,
+                    THEME: (e.valueOf() as IThemes) || 'light',
+                  })
+                }
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectItem value="light">Light</SelectItem>
+                    <SelectItem value="dark">Dark</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
             </div>
           </div>
           <DialogFooter>
