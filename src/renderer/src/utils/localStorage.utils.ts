@@ -24,6 +24,6 @@ export function getItem<T>(key: string): T | null {
     return JSON.parse(item) as T
   } catch {
     localStorage.removeItem(key)
-    return null
+    return getItem<T>(key)
   }
 }
