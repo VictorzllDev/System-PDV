@@ -1,11 +1,7 @@
-import { Outlet } from 'react-router-dom'
-import { Toaster } from './components/ui/sonner'
-
 export function App(): JSX.Element {
   return (
     <>
-      <Outlet />
-      <Toaster />
+      <h1 className="text-red-400">Hello World!</h1>
     </>
   )
 }
