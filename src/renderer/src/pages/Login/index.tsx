@@ -26,62 +26,37 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@renderer/components/ui/select'
+import { useLogin } from '@renderer/hooks/useLogin.hook'
 import { changeSettings } from '@renderer/redux/settings/slice'
 import { RootState } from '@renderer/redux/store'
-import { loginAction } from '@renderer/redux/user/slice'
-import { loginService } from '@renderer/services/login.service'
 import { IHandleLogin } from '@renderer/types/login.types'
 import { ISettings, IThemes } from '@renderer/types/settings.types'
 import { showNotification } from '@renderer/utils/notification.utils'
-import { IconSettings } from '@tabler/icons-react'
+import { IconLoader3, IconSettings } from '@tabler/icons-react'
 import { FormEvent, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
 
 export function Login() {
   const SETTINGS = useSelector((state: RootState) => state.settings)
-  const navigate = useNavigate()
+  const [settings, setSettings] = useState<ISettings>(SETTINGS)
   const dispatch = useDispatch()
 
-  const [settings, setSettings] = useState<ISettings>(SETTINGS)
+  const { mutate, isPending } = useLogin()
 
   const handleLogin = async (e: FormEvent<IHandleLogin>): Promise<void> => {
     e.preventDefault()
 
-    const data = {
-      email: e.currentTarget.email.value,
-      password: e.currentTarget.password.value,
-    }
+    const email = e.currentTarget.email.value
+    const password = e.currentTarget.password.value
 
-    if (!data.email || !data.password)
+    if (!email || !password)
       return showNotification.Warn({
         title: 'Campos obrigatórios não preenchidos',
         description:
           'Por favor, preencha o campo de e-mail e a senha para continuar.',
       })
-    try {
-      const result = await loginService(SETTINGS.API_URL, data)
 
-      dispatch(loginAction(result))
-      navigate(`/${result.access.name.toLowerCase()}`)
-      showNotification.Success({
-        title: 'Login realizado com sucesso',
-        description: `Você agora está logado. Bem-vindo de volta!`,
-      })
-    } catch (err: any) {
-      if (err.response?.data?.message) {
-        showNotification.Error({
-          title: 'ERROR',
-          description: err.response.data.message,
-        })
-      } else {
-        showNotification.Error({
-          title: 'Erro de conexão com a API',
-          description:
-            'Verifique se a URL da API está correta e se o servidor está acessível.',
-        })
-      }
-    }
+    mutate({ email, password })
   }
 
   const handleSaveSettings = (settings: ISettings): void => {
@@ -107,7 +82,7 @@ export function Login() {
               <Input type="password" id="password" placeholder="********" />
             </div>
             <Button type="submit" className="w-full">
-              Entrar
+              {isPending ? <IconLoader3 className="animate-spin" /> : 'Entrar'}
             </Button>
           </form>
         </CardContent>
